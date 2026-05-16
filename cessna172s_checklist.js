@@ -1384,7 +1384,7 @@ const MORE_REFS = [
   },
 ];
 
-export default function App() {
+function App() {
   const [currentPage, setCurrentPage] = useState("preflight");
   const [checked, setChecked] = useState({});
   const [vspeedOpen, setVspeedOpen] = useState(false);
@@ -3024,3 +3024,5 @@ window.renderApp = () => {
         console.error("Manual intervention needed: Component name not recognized.");
     }
 };
+
+window.renderApp = () => ReactDOM.createRoot(document.getElementById('root')).render(<App />);
