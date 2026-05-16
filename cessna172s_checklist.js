@@ -3001,27 +3001,19 @@ function App() {
   );
 }
 
-    if (ComponentToMount) {
-        root.render(React.createElement(ComponentToMount));
-    } else {
-        // If we still can't find it, we search the global window for any function 
-        // that looks like a React component
-        console.error("Manual intervention needed: Component name not recognized.");
-    }
-};
-
-window.renderApp = () => ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-
-                                                                                     // This is the absolute final line of the file
+ // --- FINAL IGNITION BLOCK ---
 (function() {
   const mountApp = () => {
     const rootElement = document.getElementById('root');
-    if (rootElement && typeof App !== 'undefined') {
+    // We use window['App'] to ensure Babel can find the function globally
+    const AppUI = window['App'] || (typeof App !== 'undefined' ? App : null);
+
+    if (rootElement && AppUI) {
       const root = ReactDOM.createRoot(rootElement);
-      root.render(React.createElement(App));
+      root.render(React.createElement(AppUI));
       console.log("Apex Checklist: Ignition Success.");
     } else {
-      console.error("Apex Checklist: Root or App not found. Retrying...");
+      console.error("Apex Checklist: Searching for 'App' component...");
       setTimeout(mountApp, 500);
     }
   };
