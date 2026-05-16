@@ -3001,21 +3001,6 @@ function App() {
   );
 }
 
-// This script scans your file for the most likely component names Claude uses
-window.renderApp = () => {
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    
-    // We check every name Claude typically assigns to these artifacts
-    const possibleNames = ['CessnaChecklist', 'ChecklistApp', 'AviationApp', 'ApexChecklist', 'App'];
-    let ComponentToMount = null;
-
-    for (const name of possibleNames) {
-        if (typeof window[name] !== 'undefined') {
-            ComponentToMount = window[name];
-            break;
-        }
-    }
-
     if (ComponentToMount) {
         root.render(React.createElement(ComponentToMount));
     } else {
@@ -3026,3 +3011,19 @@ window.renderApp = () => {
 };
 
 window.renderApp = () => ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+                                                                                     // This is the absolute final line of the file
+(function() {
+  const mountApp = () => {
+    const rootElement = document.getElementById('root');
+    if (rootElement && typeof App !== 'undefined') {
+      const root = ReactDOM.createRoot(rootElement);
+      root.render(React.createElement(App));
+      console.log("Apex Checklist: Ignition Success.");
+    } else {
+      console.error("Apex Checklist: Root or App not found. Retrying...");
+      setTimeout(mountApp, 500);
+    }
+  };
+  mountApp();
+})();
