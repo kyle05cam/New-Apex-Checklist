@@ -11,7 +11,11 @@
 </head>
 <body class="bg-[#0B0D17]">
     <div id="root"></div>
-
     <script type="text/babel" src="./cessna172s_checklist.js"></script>
+    <script type="text/babel">
+        window.addEventListener('load', () => {
+            if (window.renderApp) { window.renderApp(); }
+        });
+    </script>
 </body>
 </html>
