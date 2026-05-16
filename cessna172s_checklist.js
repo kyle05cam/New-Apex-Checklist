@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
 const PAGES = [
   {
@@ -3000,3 +3000,27 @@ export default function App() {
     </div>
   );
 }
+
+// This script scans your file for the most likely component names Claude uses
+window.renderApp = () => {
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    
+    // We check every name Claude typically assigns to these artifacts
+    const possibleNames = ['CessnaChecklist', 'ChecklistApp', 'AviationApp', 'ApexChecklist', 'App'];
+    let ComponentToMount = null;
+
+    for (const name of possibleNames) {
+        if (typeof window[name] !== 'undefined') {
+            ComponentToMount = window[name];
+            break;
+        }
+    }
+
+    if (ComponentToMount) {
+        root.render(React.createElement(ComponentToMount));
+    } else {
+        // If we still can't find it, we search the global window for any function 
+        // that looks like a React component
+        console.error("Manual intervention needed: Component name not recognized.");
+    }
+};
