@@ -13,21 +13,9 @@
 <body class="bg-[#0B0D17]">
     <div id="root"></div>
     <script type="text/babel">
-        // Global helper for icons
+        // Ensure Lucide icons are available globally
         window.lucide = lucide;
     </script>
     <script type="text/babel" src="./cessna172s_checklist.js"></script>
-    <script type="text/babel">
-        window.addEventListener('load', () => {
-            // Wait for Babel to finish translating the App
-            setTimeout(() => {
-                if (window.renderApp) { 
-                    window.renderApp(); 
-                } else {
-                    console.error("App failed to mount. Check console for script errors.");
-                }
-            }, 500);
-        });
-    </script>
 </body>
 </html>
