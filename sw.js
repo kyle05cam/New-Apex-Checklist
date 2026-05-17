@@ -1,9 +1,9 @@
-const CACHE_NAME = 'apex-v1';
+const CACHE_NAME = 'apex-v2';
 const ASSETS = [
   '/',
-  '/index.html',
-  '/cessna172s_checklist.js',
-  '/manifest.json',
+  'index.html',
+  'cessna172s_checklist.js',
+  'manifest.json',
   'https://unpkg.com/react@18/umd/react.development.js',
   'https://unpkg.com/react-dom@18/umd/react-dom.development.js',
   'https://unpkg.com/@babel/standalone/babel.min.js',
@@ -11,26 +11,30 @@ const ASSETS = [
   'https://unpkg.com/lucide@latest'
 ];
 
-// Installs the co-pilot (Service Worker) and downloads everything
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('Flight Deck: Downloading assets for offline use...');
-      return cache.addAll(ASSETS);
+      // We use map to try and load each file individually
+      // This way, if one fails, the others still save
+      return Promise.allSettled(
+        ASSETS.map(url => cache.add(url))
+      );
     })
   );
-  self.skipWaiting(); // Force it to activate immediately
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(clients.claim()); // Take control of the app immediately
+  event.waitUntil(clients.claim());
 });
 
-// The co-pilot intercepts requests and pulls from the local cache if offline
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+      return response || fetch(event.request).catch(() => {
+        // Fallback for when we are truly offline and it's not in cache
+        return caches.match('index.html');
+      });
     })
   );
 });
