@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Apex Aviation</title>
     
-    <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Apex">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/579/579268.png">
+    <link rel="manifest" href="./manifest.json">
     
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -19,7 +21,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // Ensure Lucide icons are available globally
+        // Global helper for icons
         window.lucide = lucide;
     </script>
 
@@ -29,9 +31,9 @@
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js').then(reg => {
-            console.log('Flight Deck Offline Mode Ready.');
+            console.log('Apex Checklist: Offline System Active');
           }).catch(err => {
-            console.log('Offline Registration Failed:', err);
+            console.error('Offline Registration Failed:', err);
           });
         });
       }
